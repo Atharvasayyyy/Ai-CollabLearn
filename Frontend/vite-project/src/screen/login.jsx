@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../config/axios';
+import { useUser } from '../context/user.context';
 
 
 
@@ -10,6 +11,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginUser } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,7 +25,8 @@ const LoginPage = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
+        // Use context to store user and token
+        loginUser(response.data.user, response.data.token);
         navigate('/');
       }
     } catch (err) {

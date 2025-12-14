@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Hero = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [projectName, setProjectName] = useState('');
+
+  const handleAddProject = () => {
+    if (projectName.trim()) {
+      console.log('Project Added:', { projectName });
+      // Here you can add API call to save the project
+      setProjectName('');
+      setShowModal(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
@@ -14,7 +25,7 @@ export const Hero = () => {
           </div>
           <span className="text-xl font-bold">CollabLearn</span>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <button
             onClick={() => navigate('/login')}
             className="px-6 py-2 rounded-lg border border-gray-600 hover:border-blue-500 text-gray-300 hover:text-white transition"
@@ -26,6 +37,15 @@ export const Hero = () => {
             className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-lg font-semibold transition"
           >
             Register
+          </button>
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-6 py-2 rounded-lg border border-purple-600 hover:border-purple-500 text-purple-300 hover:text-purple-100 transition flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add Project
           </button>
         </div>
       </nav>
@@ -182,6 +202,55 @@ export const Hero = () => {
           <p>&copy; 2025 CollabLearn. Empowering students to create and learn together.</p>
         </div>
       </footer>
+
+      {/* Add Project Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Create New Project</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-400 hover:text-gray-200 transition"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Project Name Input */}
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Project Name</label>
+                <input
+                  type="text"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="Enter project name"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
+                />
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white rounded-lg font-semibold transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddProject}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-lg font-semibold transition transform hover:scale-105"
+              >
+                Add Project
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

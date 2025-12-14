@@ -5,7 +5,7 @@ import corse from 'cors';
 
 import connectDB from './Autentication/db/db.js';
 import userRouter from './Autentication/routes/user.router.js';
-
+import projectRouter from './Project/routes/project.routes.js';
 
 const app = express();
 app.use(morgon('dev'));
@@ -15,6 +15,7 @@ connectDB();
 app.use(corse());
 
 app.use('/api/users', userRouter);
+app.use('/api/projects', projectRouter);
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });

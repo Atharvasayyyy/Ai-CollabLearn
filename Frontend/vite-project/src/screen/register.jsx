@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../config/axios';
+import { useUser } from '../context/user.context';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { registerUser } = useUser();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -21,7 +23,8 @@ const RegisterPage = () => {
       });
 
       if (response.status === 201) {
-        localStorage.setItem('token', response.data.token);
+        // Use context to store user and token
+        registerUser(response.data.user, response.data.token);
         navigate('/');
       }
     } catch (err) {
